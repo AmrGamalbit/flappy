@@ -1,24 +1,19 @@
 import pygame
 
 class Pipe(pygame.sprite.Sprite):
-    def __init__(self, y, position):
+    def __init__(self, x, y, position):
         super().__init__()
-        self.pipe_image = pygame.image.load("assets/game_objects/pipe-green.png").convert_alpha()
+        self.image = pygame.image.load("assets/pipe.png")
+        self.rect = self.image.get_rect()
+        self.pipe_gap = 150
 
-        if position == "top":
-            self.image = pygame.transform.flip(self.pipe_image, False, True)
-            self.rect = self.image.get_rect(midtop=(700, y))
+        if position == 1:
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.rect.bottomleft = (x, y - self.pipe_gap // 2)
         else:
-            self.image = self.pipe_image
-            self.rect = self.image.get_rect(midtop=(700, y))
-
-        self.scroll_speed = 10
-
-    def scroll(self):
-        self.rect.x -= self.scroll_speed
+            self.rect.topleft = (x, y + self.pipe_gap // 2)
 
     def update(self):
-        self.scroll()
-
-        if self.rect.x <= -100:
+        self.rect.x -= 5
+        if self.rect.x < -100:
             self.kill()
